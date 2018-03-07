@@ -18,6 +18,7 @@ class ViewController: UIViewController {
         
         buttonSetup()
         pressedLabelSetup()
+        backToLogin()
     }
     
     func buttonSetup() {
@@ -50,6 +51,17 @@ class ViewController: UIViewController {
         pressedLabel.topAnchor.constraint(equalTo: view.layoutMarginsGuide.topAnchor, constant: 24.0).isActive = true
         pressedLabel.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
     }
+    
+    func backToLogin() {
+        let signoutButton = UIButton()
+        signoutButton.setTitle("Dismiss", for: .normal)
+        signoutButton.setTitleColor(.white, for: .normal)
+        signoutButton.translatesAutoresizingMaskIntoConstraints = false
+        view.addSubview(signoutButton)
+        signoutButton.addTarget(self, action: #selector(backToLoginPressed), for: .touchUpInside)
+        signoutButton.topAnchor.constraint(equalTo: view.layoutMarginsGuide.topAnchor, constant: 12.0).isActive = true
+        signoutButton.trailingAnchor.constraint(equalTo: view.layoutMarginsGuide.trailingAnchor, constant: -12.0).isActive = true
+    }
 
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
@@ -71,6 +83,10 @@ class ViewController: UIViewController {
         pressedLabel.textColor = .orange
         
         Amplitude.instance().logEvent("Second button pressed")
+    }
+    
+    @objc func backToLoginPressed() {
+        dismiss(animated: true, completion: nil)
     }
 
 }
