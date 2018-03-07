@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import Amplitude_iOS
 
 class ViewController: UIViewController {
     
@@ -15,6 +16,11 @@ class ViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        buttonSetup()
+        pressedLabelSetup()
+    }
+    
+    func buttonSetup() {
         let pressMeButton = UIButton()
         pressMeButton.setTitle("Press me", for: .normal)
         pressMeButton.setTitleColor(.white, for: .normal)
@@ -24,6 +30,18 @@ class ViewController: UIViewController {
         pressMeButton.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
         pressMeButton.centerYAnchor.constraint(equalTo: view.centerYAnchor).isActive = true
         
+        let secondButton = UIButton()
+        secondButton.setTitle("Press me next", for: .normal)
+        secondButton.setTitleColor(.white, for: .normal)
+        secondButton.translatesAutoresizingMaskIntoConstraints = false
+        secondButton.addTarget(self, action: #selector(secondButtonPressed), for: .touchUpInside)
+        view.addSubview(secondButton)
+        secondButton.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
+        secondButton.bottomAnchor.constraint(equalTo: view.layoutMarginsGuide.bottomAnchor, constant: -24.0).isActive = true
+        
+    }
+    
+    func pressedLabelSetup() {
         pressedLabel = UILabel()
         pressedLabel.text = ""
         pressedLabel.textColor = .yellow
@@ -44,6 +62,15 @@ class ViewController: UIViewController {
 
     @objc func cancelButtonTouched() {
         pressedLabel.text = "Pressed"
+        
+        Amplitude.instance().logEvent("Button pressed")
+    }
+    
+    @objc func secondButtonPressed() {
+        pressedLabel.text = "Second button pressed"
+        pressedLabel.textColor = .orange
+        
+        Amplitude.instance().logEvent("Second button pressed")
     }
 
 }

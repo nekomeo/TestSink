@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import Amplitude_iOS
 
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate {
@@ -15,7 +16,11 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
 
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
-        // Override point for customization after application launch.
+        
+        Amplitude.instance().trackingSessionEvents = true;
+        Amplitude.instance().minTimeBetweenSessionsMillis = 5000;
+        Amplitude.instance().initializeApiKey("44b7588c14d7b6bbcf3bc1bb8d82bb2d")
+        
         return true
     }
 

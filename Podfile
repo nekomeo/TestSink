@@ -6,6 +6,6 @@ target 'KitchenSink' do
   use_frameworks!
 
   # Pods for KitchenSink
-  pod 'Amplitude-iOS'
+  pod 'Amplitude-iOS', '~> 4.0.4'
 
 end
