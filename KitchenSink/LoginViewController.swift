@@ -104,5 +104,16 @@ class LoginViewController: UIViewController {
             }
         }
     }
+    
+    func checkValidEmail(email: String) -> Bool {
+        if UIHelper.isValidEmailAddress(emailAddressString: email) {
+            print("Valid Email Success")
+            return true
+        }
+        else {
+            print("Invalid email format")
+            return false
+        }
+    }
 
 }
