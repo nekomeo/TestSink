@@ -90,4 +90,44 @@ public class APIManager {
             }
         }.resume()
     }
+    
+    public func signInDevice(email: String, completion: @escaping (SignUpInfo?, Error?) -> ()) {
+        let email = email.lowercased()
+        
+        let url = URL(string: "\(serverAddress)/v1/oauth/applications.json")
+        let jsonString = """
+        {"device":{"email": "\(email)"}}
+        """
+//        doorkeeper_application: {
+//            name: "",
+//            redirect_uri: "",
+//            scopes: ['exchange'],
+//            superapp: "true"
+//        },
+//        user: {
+//            "email": "\(email)"
+//        }
+        var request = URLRequest(url: url!)
+        request.httpMethod = "POST"
+        request.httpBody = jsonString.data(using: .utf8)
+        request.setValue("application/json; charset=utf-8", forHTTPHeaderField: "Content-Type")
+        
+        URLSession.shared.dataTask(with: request) { (data, response, error) in
+            
+            if let error = error {
+                completion(nil, error)
+            }
+            else if let data = data {
+                let decoder = JSONDecoder()
+                do {
+                    let info = try decoder.decode(SignUpInfo.self, from: data)
+                    completion(info, nil)
+                }
+                catch let jsonError {
+                    completion(nil, jsonError)
+                }
+            }
+            
+        }.resume()
+    }
 }

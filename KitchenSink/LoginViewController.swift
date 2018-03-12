@@ -35,7 +35,8 @@ class LoginViewController: UIViewController {
         titleLabel.topAnchor.constraint(equalTo: view.layoutMarginsGuide.topAnchor, constant: 24.0).isActive = true
         
         emailTextField = UITextField()
-        emailTextField.placeholder = "Email"
+//        emailTextField.placeholder = "Email"
+        emailTextField.text = "linh@linh.com"
         emailTextField.translatesAutoresizingMaskIntoConstraints = false
         view.addSubview(emailTextField)
         emailTextField.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
