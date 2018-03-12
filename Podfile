@@ -8,5 +8,6 @@ target 'KitchenSink' do
   # Pods for KitchenSink
   pod 'Amplitude-iOS', '~> 4.0.4'
   pod 'OAuthSwift', '~> 1.2.0'
+  pod 'KeychainSwift', '~> 10.0'
 
 end

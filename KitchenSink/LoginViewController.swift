@@ -40,13 +40,13 @@ class LoginViewController: UIViewController {
         emailTextField.centerYAnchor.constraint(equalTo: view.centerYAnchor, constant: -20.0).isActive = true
         emailTextField.autocorrectionType = .no
         
-        let passwordTextField = UITextField()
-        passwordTextField.placeholder = "Password"
-        passwordTextField.translatesAutoresizingMaskIntoConstraints = false
-        view.addSubview(passwordTextField)
-        passwordTextField.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
-        passwordTextField.centerYAnchor.constraint(equalTo: view.centerYAnchor).isActive = true
-        passwordTextField.autocorrectionType = .no
+//        let passwordTextField = UITextField()
+//        passwordTextField.placeholder = "Password"
+//        passwordTextField.translatesAutoresizingMaskIntoConstraints = false
+//        view.addSubview(passwordTextField)
+//        passwordTextField.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
+//        passwordTextField.centerYAnchor.constraint(equalTo: view.centerYAnchor).isActive = true
+//        passwordTextField.autocorrectionType = .no
         
         let loginButton = UIButton()
         loginButton.setTitle("Login", for: .normal)
@@ -57,7 +57,7 @@ class LoginViewController: UIViewController {
         loginButton.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
         loginButton.widthAnchor.constraint(equalToConstant: 221.0).isActive = true
         loginButton.heightAnchor.constraint(equalToConstant: 44.0).isActive = true
-        loginButton.topAnchor.constraint(equalTo: passwordTextField.bottomAnchor, constant: 20.0).isActive = true
+        loginButton.topAnchor.constraint(equalTo: emailTextField.bottomAnchor, constant: 24.0).isActive = true
     }
     
 
@@ -72,6 +72,8 @@ class LoginViewController: UIViewController {
     */
     
     @objc func loginButtonTapped() {
+        
+        
         performSegue(withIdentifier: "toMainVC", sender: self)
     }
 
