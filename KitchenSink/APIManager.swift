@@ -47,6 +47,7 @@ public class APIManager {
                 
                 if let info = try? decoder.decode(SignUpInfo.self, from: data), let token = info.token {
                     self.token = token
+                    print("Token: \(self.token)")
                     
 //                    // Save jwt in keychain
 //                    let keychain = KeychainHelper()
