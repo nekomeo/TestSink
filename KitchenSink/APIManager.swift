@@ -13,6 +13,8 @@ public class APIManager {
     //    let serverAddress = "http://localhost:3000/v1/users"
     let serverAddress = "http://localhost:3000"
     var token: String!
+    var clientID: String!
+    var clientSecret: String!
     
 //    "user":{"email":"test@test.com"}
     
@@ -62,14 +64,15 @@ public class APIManager {
         
         let email = email.lowercased()
         
-        let url = URL(string: "\(registrationAPIAddress)/add_email")
+        let url = URL(string: "\(registrationAPIAddress)/email")
         let jsonString = """
-        {"user":{"email": "\(email)"}}
+        {"user":{"email": "\(email)", "exchange": true}}
         """
+        print("JSON String: \(jsonString)")
         
         var request = URLRequest(url: url!)
         request.httpMethod = "POST"
-        request.setValue("Bearer \(token)", forHTTPHeaderField: "Authorization")
+//        request.setValue("Bearer \(token)", forHTTPHeaderField: "Authorization")
         request.httpBody = jsonString.data(using: .utf8)
         request.setValue("application/json; charset=utf-8", forHTTPHeaderField: "Content-Type")
         
@@ -96,21 +99,30 @@ public class APIManager {
         
         let url = URL(string: "\(serverAddress)/v1/oauth/applications.json")
         let jsonString = """
-        {"device":{"email": "\(email)"}}
+        {“doorkeeper_application”:
+            {
+                “name”: “”,
+                “redirect_uri”: “”,
+                “scopes”: ["exchange"],
+                “superapp”: “true”
+            },
+        “user”:
+            {
+            “email”: “\(email)”
+            }
+        }
         """
-//        doorkeeper_application: {
-//            name: "",
-//            redirect_uri: "",
-//            scopes: ['exchange'],
-//            superapp: "true"
-//        },
-//        user: {
-//            "email": "\(email)"
-//        }
+//        {"device":{"email": "\(email)"}}
         var request = URLRequest(url: url!)
         request.httpMethod = "POST"
         request.httpBody = jsonString.data(using: .utf8)
         request.setValue("application/json; charset=utf-8", forHTTPHeaderField: "Content-Type")
+        
+        print("Email: \(email)")
+        print("Url: \(url)")
+        print("jsonString: \(jsonString)")
+//        print("ClientID: \(clientID)")
+//        print("Secret: \(clientSecret)")
         
         URLSession.shared.dataTask(with: request) { (data, response, error) in
             
@@ -122,9 +134,50 @@ public class APIManager {
                 do {
                     let info = try decoder.decode(SignUpInfo.self, from: data)
                     completion(info, nil)
+                    print("Info: \(info)")
+                    print("Data: \(data)")
+                    print("Client ID: \(self.clientID)")
+                    print("Secret: \(self.clientSecret)")
                 }
                 catch let jsonError {
                     completion(nil, jsonError)
+                }
+            }
+        }.resume()
+    }
+    
+    public func getUserEmails(completion: @escaping (UserEmailInfo?, Error?) -> ()) {
+        
+        let url = URL(string: "\(registrationAPIAddress)")
+        
+        var request = URLRequest(url: url!)
+        request.httpMethod = "GET"
+//        request.setValue("Bearer \(token)", forHTTPHeaderField: "Authorization")
+        
+        URLSession.shared.dataTask(with: request) { (data, response, error) in
+            
+            if let error = error {
+                
+                completion(nil, error)
+            }
+            else if let data = data {
+                
+                do {
+                    
+                    let infoDictionary = try JSONDecoder().decode([String: UserEmailInfo].self, from: data)
+                    
+                    if let userEmailInfo = infoDictionary["user"] {
+                        completion(userEmailInfo, nil)
+                    }
+                    else {
+                        completion(nil, nil)
+                    }
+                    
+                }
+                catch let jsonError {
+                    
+                    completion(nil, jsonError)
+                    
                 }
             }
         }.resume()

@@ -104,6 +104,22 @@ class LoginViewController: UIViewController {
                 }
             }
         }
+        
+        manager.signInDevice(email: email) { (info, error) in
+            DispatchQueue.main.async {
+                if let _ = error {
+                    print("Error connecting to server..maybe")
+                }
+                else {
+                    if let error = info?.errors {
+                        print("Some error")
+                    }
+                    else {
+                        print("Confirmation sent")
+                    }
+                }
+            }
+        }
     }
     
     func checkValidEmail(email: String) -> Bool {
