@@ -96,7 +96,7 @@ class LoginViewController: UIViewController {
                                 else {
                                     print("Success")
                                     print("User entered email: \(email)")
-                                    self.performSegue(withIdentifier: "toMainVC", sender: self)
+                                    self.performSegue(withIdentifier: "toVerificationVC", sender: self)
                                 }
                             }
                         }

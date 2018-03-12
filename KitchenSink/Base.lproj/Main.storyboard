@@ -21,12 +21,30 @@
                         <viewLayoutGuide key="safeArea" id="ivN-fp-K7g"/>
                     </view>
                     <connections>
-                        <segue destination="BYZ-38-t0r" kind="presentation" identifier="toMainVC" modalTransitionStyle="crossDissolve" id="exy-39-u8m"/>
+                        <segue destination="XW8-LC-lIT" kind="presentation" identifier="toVerificationVC" modalTransitionStyle="crossDissolve" id="QaC-yy-Hv2"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="02y-mv-tGm" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-772" y="34"/>
+            <point key="canvasLocation" x="-1402" y="116"/>
+        </scene>
+        <!--Verification View Controller-->
+        <scene sceneID="PTC-JP-wGV">
+            <objects>
+                <viewController id="XW8-LC-lIT" customClass="VerificationViewController" customModule="KitchenSink" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="rNN-GJ-Xrb">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <color key="backgroundColor" red="0.941366357786111" green="0.60784313729999995" blue="1" alpha="1" colorSpace="calibratedRGB"/>
+                        <viewLayoutGuide key="safeArea" id="nPe-dm-Wle"/>
+                    </view>
+                    <connections>
+                        <segue destination="BYZ-38-t0r" kind="presentation" identifier="toMainVC" modalTransitionStyle="crossDissolve" id="P8z-33-EqQ"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="5jO-VT-ujM" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="-617" y="116"/>
         </scene>
         <!--Main-->
         <scene sceneID="tne-QT-ifu">
@@ -41,6 +59,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
             </objects>
+            <point key="canvasLocation" x="287" y="116"/>
         </scene>
     </scenes>
 </document>
