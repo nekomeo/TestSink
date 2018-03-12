@@ -9,6 +9,8 @@
 import UIKit
 
 class LoginViewController: UIViewController {
+    
+    var emailTextField: UITextField!
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -32,7 +34,7 @@ class LoginViewController: UIViewController {
         titleLabel.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
         titleLabel.topAnchor.constraint(equalTo: view.layoutMarginsGuide.topAnchor, constant: 24.0).isActive = true
         
-        let emailTextField = UITextField()
+        emailTextField = UITextField()
         emailTextField.placeholder = "Email"
         emailTextField.translatesAutoresizingMaskIntoConstraints = false
         view.addSubview(emailTextField)
@@ -72,9 +74,35 @@ class LoginViewController: UIViewController {
     */
     
     @objc func loginButtonTapped() {
+        guard let email = emailTextField.text else { return }
         
-        
-        performSegue(withIdentifier: "toMainVC", sender: self)
+        let manager = APIManager()
+        manager.createUser { (error) in
+            DispatchQueue.main.async {
+                if let _ = error {
+                    print("Error occured creating user")
+                }
+                else {
+                    manager.saveEmail(email: email, completion: { (info, emailError) in
+                        DispatchQueue.main.async {
+                            if let _ = emailError {
+                                print("Error saving email")
+                            }
+                            else {
+                                if let error = info?.errors {
+                                    print("Error: \(error)")
+                                }
+                                else {
+                                    print("Success")
+                                    print("User entered email: \(email)")
+                                    self.performSegue(withIdentifier: "toMainVC", sender: self)
+                                }
+                            }
+                        }
+                    })
+                }
+            }
+        }
     }
 
 }
