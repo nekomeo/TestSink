@@ -19,6 +19,7 @@ class VerificationViewController: UIViewController {
         super.viewDidLoad()
 
         initialSetup()
+        backToBeginning()
         
         manager.getUserEmails { (info, error) in
             DispatchQueue.main.async {
@@ -71,6 +72,17 @@ class VerificationViewController: UIViewController {
         verifyButton.heightAnchor.constraint(equalToConstant: 44.0).isActive = true
     }
     
+    func backToBeginning() {
+        let dismissButton = UIButton()
+        dismissButton.setTitle("Dismiss", for: .normal)
+        dismissButton.setTitleColor(.blue, for: .normal)
+        dismissButton.translatesAutoresizingMaskIntoConstraints = false
+        dismissButton.addTarget(self, action: #selector(dismissButtonPressed), for: .touchUpInside)
+        view.addSubview(dismissButton)
+        dismissButton.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
+        dismissButton.bottomAnchor.constraint(equalTo: view.layoutMarginsGuide.bottomAnchor, constant: -24.0).isActive = true
+    }
+    
     /*
     // MARK: - Navigation
 
@@ -103,6 +115,10 @@ class VerificationViewController: UIViewController {
             }
         }
         print("Verify button pressed")
+    }
+    
+    @objc func dismissButtonPressed() {
+        self.view.window?.rootViewController?.dismiss(animated: true, completion: nil)
     }
 
 }

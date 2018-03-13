@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="13771" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="bww-z0-MZS">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="13771" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="s2x-2u-hTt">
     <device id="retina4_7" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
@@ -10,10 +10,10 @@
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <scenes>
-        <!--Login-->
+        <!--Signup-->
         <scene sceneID="fai-xh-IFL">
             <objects>
-                <viewController title="Login" id="bww-z0-MZS" customClass="LoginViewController" customModule="KitchenSink" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController title="Signup" id="bww-z0-MZS" customClass="LoginViewController" customModule="KitchenSink" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="abT-gQ-i2b">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -26,7 +26,46 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="02y-mv-tGm" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-1402" y="116"/>
+            <point key="canvasLocation" x="-1486" y="126"/>
+        </scene>
+        <!--Main-->
+        <scene sceneID="zRb-TA-bs6">
+            <objects>
+                <viewController title="Main" id="s2x-2u-hTt" customClass="FirstViewController" customModule="KitchenSink" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="oaZ-lW-GfK">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="r1B-OB-Lzb">
+                                <rect key="frame" x="164" y="190" width="47" height="30"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <state key="normal" title="Sign In">
+                                    <color key="titleColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
+                                </state>
+                                <connections>
+                                    <action selector="signinButtonPressed:" destination="s2x-2u-hTt" eventType="touchUpInside" id="qgh-5m-FOf"/>
+                                    <segue destination="XW8-LC-lIT" kind="presentation" identifier="toSignin" modalTransitionStyle="crossDissolve" id="mwN-GY-1eA"/>
+                                </connections>
+                            </button>
+                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="aD4-cr-z1l">
+                                <rect key="frame" x="160" y="377" width="55" height="30"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <state key="normal" title="Sign Up">
+                                    <color key="titleColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
+                                </state>
+                                <connections>
+                                    <action selector="signupButtonPressed:" destination="s2x-2u-hTt" eventType="touchUpInside" id="hfd-AN-gob"/>
+                                    <segue destination="bww-z0-MZS" kind="presentation" identifier="toSignup" modalTransitionStyle="crossDissolve" id="Q4F-Yb-bp1"/>
+                                </connections>
+                            </button>
+                        </subviews>
+                        <color key="backgroundColor" red="0.15682956579999999" green="0.24417480829999999" blue="0.35687708849999999" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
+                        <viewLayoutGuide key="safeArea" id="2id-C0-edQ"/>
+                    </view>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="5Cl-b6-MUL" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="-1068" y="-661"/>
         </scene>
         <!--Verification View Controller-->
         <scene sceneID="PTC-JP-wGV">
@@ -62,4 +101,7 @@
             <point key="canvasLocation" x="287" y="116"/>
         </scene>
     </scenes>
+    <inferredMetricsTieBreakers>
+        <segue reference="mwN-GY-1eA"/>
+    </inferredMetricsTieBreakers>
 </document>
