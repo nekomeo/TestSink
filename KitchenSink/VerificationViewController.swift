@@ -22,7 +22,7 @@ class VerificationViewController: UIViewController {
         
         manager.getUserEmails { (info, error) in
             DispatchQueue.main.async {
-                if error != nil {
+                if error == nil {
                     print("Not able to retrieve data")
                 }
                 else {
@@ -42,6 +42,16 @@ class VerificationViewController: UIViewController {
     
 
     func initialSetup() {
+        let headingLabel = UILabel()
+        headingLabel.text = "We sent you an email.\nPlease check your email to confirm registration"
+        headingLabel.textColor = .darkGray
+        headingLabel.textAlignment = .center
+        headingLabel.numberOfLines = 0
+        headingLabel.translatesAutoresizingMaskIntoConstraints = false
+        view.addSubview(headingLabel)
+        headingLabel.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
+        headingLabel.topAnchor.constraint(equalTo: view.layoutMarginsGuide.topAnchor, constant: 20.0).isActive = true
+        
         emailLabel = UILabel()
         emailLabel.text = ""
         emailLabel.translatesAutoresizingMaskIntoConstraints = false
@@ -82,11 +92,12 @@ class VerificationViewController: UIViewController {
                     print("Error when connecting to the server")
                 }
                 else {
-                    if let error = emailInfo?.errors {
-                        print("Some error")
+                    if (emailInfo?.errors) != nil {
+                        print("Some error: \(String(describing: emailInfo?.errors))")
                     }
                     else {
                         print("Code was sent to your email address")
+                        self.performSegue(withIdentifier: "toMainVC", sender: self)
                     }
                 }
             }

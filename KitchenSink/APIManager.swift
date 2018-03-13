@@ -99,16 +99,16 @@ public class APIManager {
         
         let url = URL(string: "\(serverAddress)/v1/oauth/applications.json")
         let jsonString = """
-        {“doorkeeper_application”:
+        {"doorkeeper_application":
             {
-                “name”: “”,
-                “redirect_uri”: “”,
-                “scopes”: ["exchange"],
-                “superapp”: “true”
+                "name": "\(email)",
+                "redirect_uri": "http://localhost:8000",
+                "scopes": ["exchange"],
+                "superapp": "true"
             },
-        “user”:
+        "user":
             {
-            “email”: “\(email)”
+            "email": "\(email)"
             }
         }
         """
@@ -119,6 +119,7 @@ public class APIManager {
         request.setValue("application/json; charset=utf-8", forHTTPHeaderField: "Content-Type")
         
         print("Email: \(email)")
+        print("Name: \(email)")
         print("Url: \(url)")
         print("jsonString: \(jsonString)")
 //        print("ClientID: \(clientID)")
@@ -128,16 +129,19 @@ public class APIManager {
             
             if let error = error {
                 completion(nil, error)
+                
             }
             else if let data = data {
                 let decoder = JSONDecoder()
                 do {
-                    let info = try decoder.decode(SignUpInfo.self, from: data)
-                    completion(info, nil)
-                    print("Info: \(info)")
-                    print("Data: \(data)")
-                    print("Client ID: \(self.clientID)")
-                    print("Secret: \(self.clientSecret)")
+                    
+                    let info = try? decoder.decode(ClientInfoData.self, from: data)
+//                    completion(info, nil)
+                    print("Message:\(info?.message)")
+                    print("ID: \(info?.client_id)")
+                    print("Secret\(info?.client_secret)")
+//                    print("Data: \(data)")
+                    
                 }
                 catch let jsonError {
                     completion(nil, jsonError)

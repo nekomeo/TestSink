@@ -11,6 +11,7 @@ import UIKit
 class LoginViewController: UIViewController {
     
     var emailTextField: UITextField!
+    var nameTextField: UITextField!
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -34,9 +35,18 @@ class LoginViewController: UIViewController {
         titleLabel.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
         titleLabel.topAnchor.constraint(equalTo: view.layoutMarginsGuide.topAnchor, constant: 24.0).isActive = true
         
+        nameTextField = UITextField()
+//        nameTextField.placeholder = "Name"
+        nameTextField.text = "Linh"
+        nameTextField.translatesAutoresizingMaskIntoConstraints = false
+        view.addSubview(nameTextField)
+        nameTextField.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
+        nameTextField.centerYAnchor.constraint(equalTo: view.centerYAnchor, constant: -40.0).isActive = true
+        nameTextField.autocorrectionType = .no
+        
         emailTextField = UITextField()
 //        emailTextField.placeholder = "Email"
-        emailTextField.text = "linh@linh.com"
+        emailTextField.text = "veri@linh.com"
         emailTextField.translatesAutoresizingMaskIntoConstraints = false
         view.addSubview(emailTextField)
         emailTextField.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
@@ -75,7 +85,7 @@ class LoginViewController: UIViewController {
     */
     
     @objc func loginButtonTapped() {
-        guard let email = emailTextField.text else { return }
+        guard let email = emailTextField.text, let name = nameTextField.text else { return }
         
         let manager = APIManager()
         manager.createUser { (error) in
@@ -94,7 +104,8 @@ class LoginViewController: UIViewController {
                                     print("Error: \(error)")
                                 }
                                 else {
-                                    print("Success")
+//                                    print("Success")
+                                    print("User name is: \(name)")
                                     print("User entered email: \(email)")
                                     self.performSegue(withIdentifier: "toVerificationVC", sender: self)
                                 }

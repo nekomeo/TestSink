@@ -15,3 +15,9 @@ public struct UserEmailInfo: Codable {
     public let unconfirmed_email: String?
     
 }
+
+public struct ClientInfoData: Codable {
+    public let message: String
+    public let client_id: String?
+    public let client_secret: String?
+}
