@@ -53,7 +53,7 @@ class VerificationViewController: UIViewController {
         headingLabel.topAnchor.constraint(equalTo: view.layoutMarginsGuide.topAnchor, constant: 20.0).isActive = true
         
         emailLabel = UILabel()
-        emailLabel.text = ""
+        emailLabel.text = "Hello"
         emailLabel.translatesAutoresizingMaskIntoConstraints = false
         view.addSubview(emailLabel)
         emailLabel.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
@@ -66,7 +66,7 @@ class VerificationViewController: UIViewController {
         verifyButton.addTarget(self, action: #selector(verifyButtonPressed), for: .touchUpInside)
         view.addSubview(verifyButton)
         verifyButton.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
-        verifyButton.centerYAnchor.constraint(equalTo: view.centerYAnchor, constant: 24.0).isActive = true
+        verifyButton.topAnchor.constraint(equalTo: emailLabel.bottomAnchor, constant: 12.0).isActive = true
         verifyButton.widthAnchor.constraint(equalToConstant: 221.0).isActive = true
         verifyButton.heightAnchor.constraint(equalToConstant: 44.0).isActive = true
     }
