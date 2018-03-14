@@ -37,7 +37,7 @@ class LoginViewController: UIViewController {
         
         nameTextField = UITextField()
 //        nameTextField.placeholder = "Name"
-        nameTextField.text = "Linh"
+        nameTextField.text = "Gwen"
         nameTextField.translatesAutoresizingMaskIntoConstraints = false
         view.addSubview(nameTextField)
         nameTextField.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
@@ -46,7 +46,7 @@ class LoginViewController: UIViewController {
         
         emailTextField = UITextField()
 //        emailTextField.placeholder = "Email"
-        emailTextField.text = "veri@linh.com"
+        emailTextField.text = "gwen@gwen.com"
         emailTextField.translatesAutoresizingMaskIntoConstraints = false
         view.addSubview(emailTextField)
         emailTextField.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true

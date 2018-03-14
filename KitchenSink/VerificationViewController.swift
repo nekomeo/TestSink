@@ -11,7 +11,17 @@ import UIKit
 class VerificationViewController: UIViewController {
     
     var email: String?
-    var emailLabel: UILabel!
+    var emailTextField: UITextField!
+    var numberToolbar: UIToolbar!
+    
+    var code1TextField: UITextField!
+    var code2TextField: UITextField!
+    var code3TextField: UITextField!
+    var code4TextField: UITextField!
+    var code5TextField: UITextField!
+    var code6TextField: UITextField!
+    
+    var errorLabel: UILabel!
     
     let manager = APIManager()
 
@@ -20,6 +30,7 @@ class VerificationViewController: UIViewController {
 
         initialSetup()
         backToBeginning()
+        verificationCodeSetup()
         
         manager.getUserEmails { (info, error) in
             DispatchQueue.main.async {
@@ -27,13 +38,23 @@ class VerificationViewController: UIViewController {
                     print("Not able to retrieve data")
                 }
                 else {
-                    if let email = info?.email {
-                        self.emailLabel.text = "Hi \(email)"
-                    }
+//                    if let email = info?.email {
+//                        self.emailTextField.text = "Hi \(email)"
+//                    }
                 }
                 print("Yo")
             }
         }
+        
+        numberToolbar = UIToolbar()
+        numberToolbar.barStyle = .blackTranslucent
+        numberToolbar.items = [
+            UIBarButtonItem(title: "Cancel", style: .bordered, target: self, action: Selector(("displayNoValidation"))),
+            UIBarButtonItem(barButtonSystemItem: .flexibleSpace, target: self, action: nil),
+            UIBarButtonItem(title: "Apply", style: .bordered, target: self, action: Selector(("displayValidationError")))
+        ]
+        
+        numberToolbar.sizeToFit()
     }
 
     override func didReceiveMemoryWarning() {
@@ -53,21 +74,21 @@ class VerificationViewController: UIViewController {
         headingLabel.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
         headingLabel.topAnchor.constraint(equalTo: view.layoutMarginsGuide.topAnchor, constant: 20.0).isActive = true
         
-        emailLabel = UILabel()
-        emailLabel.text = "Hello"
-        emailLabel.translatesAutoresizingMaskIntoConstraints = false
-        view.addSubview(emailLabel)
-        emailLabel.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
-        emailLabel.centerYAnchor.constraint(equalTo: view.centerYAnchor, constant: -12.0).isActive = true
+        emailTextField = UITextField()
+        emailTextField.placeholder = "Email"
+        emailTextField.translatesAutoresizingMaskIntoConstraints = false
+        view.addSubview(emailTextField)
+        emailTextField.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
+        emailTextField.centerYAnchor.constraint(equalTo: view.centerYAnchor, constant: -48.0).isActive = true
         
         let verifyButton = UIButton()
-        verifyButton.setTitle("Verify", for: .normal)
+        verifyButton.setTitle("Sign in", for: .normal)
         verifyButton.setTitleColor(.red, for: .normal)
         verifyButton.translatesAutoresizingMaskIntoConstraints = false
         verifyButton.addTarget(self, action: #selector(verifyButtonPressed), for: .touchUpInside)
         view.addSubview(verifyButton)
         verifyButton.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
-        verifyButton.topAnchor.constraint(equalTo: emailLabel.bottomAnchor, constant: 12.0).isActive = true
+        verifyButton.topAnchor.constraint(equalTo: emailTextField.bottomAnchor, constant: 60.0).isActive = true
         verifyButton.widthAnchor.constraint(equalToConstant: 221.0).isActive = true
         verifyButton.heightAnchor.constraint(equalToConstant: 44.0).isActive = true
     }
@@ -81,6 +102,53 @@ class VerificationViewController: UIViewController {
         view.addSubview(dismissButton)
         dismissButton.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
         dismissButton.bottomAnchor.constraint(equalTo: view.layoutMarginsGuide.bottomAnchor, constant: -24.0).isActive = true
+    }
+    
+    func verificationCodeSetup() {
+        let codeStackView = UIStackView()
+        codeStackView.spacing = 8
+        codeStackView.distribution = .fillEqually
+        codeStackView.translatesAutoresizingMaskIntoConstraints = false
+        view.addSubview(codeStackView)
+        codeStackView.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
+        codeStackView.centerYAnchor.constraint(equalTo: view.centerYAnchor).isActive = true
+        
+        code1TextField = UITextField(rounded: true)
+        code1TextField.tag = 11
+        code1TextField.addTarget(self, action: #selector(codeChanged(_:)), for: .editingChanged)
+        codeStackView.addArrangedSubview(code1TextField)
+        
+        code2TextField = UITextField(rounded: true)
+        code1TextField.tag = 12
+        code2TextField.addTarget(self, action: #selector(codeChanged(_:)), for: .editingChanged)
+        codeStackView.addArrangedSubview(code2TextField)
+        
+        code3TextField = UITextField(rounded: true)
+        code1TextField.tag = 13
+        code3TextField.addTarget(self, action: #selector(codeChanged(_:)), for: .editingChanged)
+        codeStackView.addArrangedSubview(code3TextField)
+        
+        code4TextField = UITextField(rounded: true)
+        code1TextField.tag = 14
+        code4TextField.addTarget(self, action: #selector(codeChanged(_:)), for: .editingChanged)
+        codeStackView.addArrangedSubview(code4TextField)
+        
+        code5TextField = UITextField(rounded: true)
+        code1TextField.tag = 15
+        code5TextField.addTarget(self, action: #selector(codeChanged(_:)), for: .editingChanged)
+        codeStackView.addArrangedSubview(code5TextField)
+        
+        code6TextField = UITextField(rounded: true)
+        code1TextField.tag = 16
+        code6TextField.addTarget(self, action: #selector(codeChanged(_:)), for: .editingChanged)
+        codeStackView.addArrangedSubview(code6TextField)
+        
+        errorLabel = UILabel()
+        errorLabel.textAlignment = .center
+        view.addSubview(errorLabel)
+        errorLabel.topAnchor.constraint(equalTo: codeStackView.bottomAnchor, constant: 30.0).isActive = true
+        errorLabel.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
+        
     }
     
     /*
@@ -120,5 +188,92 @@ class VerificationViewController: UIViewController {
     @objc func dismissButtonPressed() {
         self.view.window?.rootViewController?.dismiss(animated: true, completion: nil)
     }
+    
+    @objc func codeChanged(_ sender: UITextField) {
+        guard let text = sender.text else { return }
+        
+        let lastChar = text.suffix(1)
+        sender.text = String(lastChar)
+        
+        if sender.tag >= 11 && sender.tag <= 15 {
+            let nextTextField = sender.superview?.viewWithTag(sender.tag + 1)
+            nextTextField?.becomeFirstResponder()
+        }
+        
+        displayNoValidation()
+    }
+    
+    func getInputCode() -> String {
+        let firstChar = code1TextField.text ?? ""
+        let secondChar = code2TextField.text ?? ""
+        let thirdChar = code3TextField.text ?? ""
+        let fourthChar = code4TextField.text ?? ""
+        let fifthChar = code5TextField.text ?? ""
+        let sixthChar = code6TextField.text ?? ""
+        
+        return "\(firstChar)\(secondChar)\(thirdChar)\(fourthChar)\(fifthChar)\(sixthChar)"
+    }
+    
+    func displayValidationError(message: String) {
+        
+        // Show error message
+        errorLabel.text = message
+        
+        setTextFieldStyle(textField: code1TextField, errorStyle: true)
+        setTextFieldStyle(textField: code2TextField, errorStyle: true)
+        setTextFieldStyle(textField: code3TextField, errorStyle: true)
+        setTextFieldStyle(textField: code4TextField, errorStyle: true)
+        setTextFieldStyle(textField: code5TextField, errorStyle: true)
+        setTextFieldStyle(textField: code6TextField, errorStyle: true)
+        
+        code1TextField.becomeFirstResponder()
+    }
+    
+    func displayNoValidation() {
+        
+        // Clear error message
+        errorLabel.text = ""
+        
+        setTextFieldStyle(textField: code1TextField, errorStyle: false)
+        setTextFieldStyle(textField: code2TextField, errorStyle: false)
+        setTextFieldStyle(textField: code3TextField, errorStyle: false)
+        setTextFieldStyle(textField: code4TextField, errorStyle: false)
+        setTextFieldStyle(textField: code5TextField, errorStyle: false)
+        setTextFieldStyle(textField: code6TextField, errorStyle: true)
+    }
+    
+    func setTextFieldStyle(textField: UITextField, errorStyle: Bool) {
+        textField.autocorrectionType = UITextAutocorrectionType.no
+        textField.layer.borderWidth = 1.0
+        textField.layer.cornerRadius = 20.0
+        textField.layer.borderColor = errorStyle ? UIColor.red.cgColor : UIColor(red: 105/255, green: 128/255, blue: 151/255, alpha: 1.0).cgColor
+        
+        // Maybe there is a simpler way to change the color of the current text...
+        let tempText = textField.text
+        textField.text = ""
+        textField.textColor = errorStyle ? UIColor.red : UIColor(red: 105/255, green: 128/255, blue: 151/255, alpha: 1.0)
+        textField.text = tempText
+    }
 
 }
+
+extension UITextField {
+
+    convenience init(rounded: Bool) {
+        self.init()
+        
+        if rounded {
+            self.autocorrectionType = .no
+            self.layer.borderWidth = 1.0
+            self.layer.cornerRadius = 20.0
+            self.translatesAutoresizingMaskIntoConstraints = false
+            self.textAlignment = .center
+            self.contentHorizontalAlignment = .center
+            self.contentVerticalAlignment = .center
+            self.heightAnchor.constraint(equalToConstant: 40.0).isActive = true
+            self.widthAnchor.constraint(equalToConstant: 40.0).isActive = true
+            self.keyboardType = .numberPad
+        }
+    }
+}
+

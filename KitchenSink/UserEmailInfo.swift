@@ -20,4 +20,7 @@ public struct ClientInfoData: Codable {
     public let message: String
     public let client_id: String?
     public let client_secret: String?
+    public let otp_attempt: String?
+    public let password: String?
+    public let refresh_token: String?
 }

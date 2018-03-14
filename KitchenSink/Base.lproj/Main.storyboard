@@ -26,7 +26,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="02y-mv-tGm" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-1486" y="126"/>
+            <point key="canvasLocation" x="-1487" y="116"/>
         </scene>
         <!--Main-->
         <scene sceneID="zRb-TA-bs6">
@@ -43,8 +43,8 @@
                                     <color key="titleColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
                                 </state>
                                 <connections>
-                                    <action selector="signinButtonPressed:" destination="s2x-2u-hTt" eventType="touchUpInside" id="qgh-5m-FOf"/>
-                                    <segue destination="XW8-LC-lIT" kind="presentation" identifier="toSignin" modalTransitionStyle="crossDissolve" id="mwN-GY-1eA"/>
+                                    <action selector="signinButtonPressed:" destination="s2x-2u-hTt" eventType="touchUpInside" id="PJk-1n-Gbn"/>
+                                    <segue destination="XW8-LC-lIT" kind="presentation" identifier="toSignin" id="juq-7r-p2H"/>
                                 </connections>
                             </button>
                             <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="aD4-cr-z1l">
@@ -54,8 +54,8 @@
                                     <color key="titleColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
                                 </state>
                                 <connections>
-                                    <action selector="signupButtonPressed:" destination="s2x-2u-hTt" eventType="touchUpInside" id="hfd-AN-gob"/>
-                                    <segue destination="bww-z0-MZS" kind="presentation" identifier="toSignup" modalTransitionStyle="crossDissolve" id="Q4F-Yb-bp1"/>
+                                    <action selector="signupButtonPressed:" destination="s2x-2u-hTt" eventType="touchUpInside" id="10r-3M-55S"/>
+                                    <segue destination="bww-z0-MZS" kind="presentation" identifier="toSignup" id="cwi-TY-w1A"/>
                                 </connections>
                             </button>
                         </subviews>
@@ -102,6 +102,6 @@
         </scene>
     </scenes>
     <inferredMetricsTieBreakers>
-        <segue reference="mwN-GY-1eA"/>
+        <segue reference="juq-7r-p2H"/>
     </inferredMetricsTieBreakers>
 </document>

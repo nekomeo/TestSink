@@ -186,4 +186,8 @@ public class APIManager {
             }
         }.resume()
     }
+    
+    public func verifyAccount() {
+        
+    }
 }
