@@ -15,7 +15,6 @@
 		6A85ED2E2050947A0048982E /* LoginViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6A85ED2D2050947A0048982E /* LoginViewController.swift */; };
 		6A85ED322050BCFE0048982E /* APIManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6A85ED312050BCFE0048982E /* APIManager.swift */; };
 		6A8E8A6E2056D516000E1E80 /* AddEmailInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6A8E8A6D2056D516000E1E80 /* AddEmailInfo.swift */; };
-		6A8E8A702056DF14000E1E80 /* UIHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6A8E8A6F2056DF14000E1E80 /* UIHelper.swift */; };
 		6A8E8A722056FF10000E1E80 /* VerificationViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6A8E8A712056FF10000E1E80 /* VerificationViewController.swift */; };
 		6A8E8A742057378B000E1E80 /* UserEmailInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6A8E8A732057378B000E1E80 /* UserEmailInfo.swift */; };
 		6AB303EC205887870006B8A8 /* FirstViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6AB303EB205887860006B8A8 /* FirstViewController.swift */; };
@@ -33,7 +32,6 @@
 		6A85ED2D2050947A0048982E /* LoginViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginViewController.swift; sourceTree = "<group>"; };
 		6A85ED312050BCFE0048982E /* APIManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = APIManager.swift; sourceTree = "<group>"; };
 		6A8E8A6D2056D516000E1E80 /* AddEmailInfo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddEmailInfo.swift; sourceTree = "<group>"; };
-		6A8E8A6F2056DF14000E1E80 /* UIHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIHelper.swift; sourceTree = "<group>"; };
 		6A8E8A712056FF10000E1E80 /* VerificationViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VerificationViewController.swift; sourceTree = "<group>"; };
 		6A8E8A732057378B000E1E80 /* UserEmailInfo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserEmailInfo.swift; sourceTree = "<group>"; };
 		6AB303EB205887860006B8A8 /* FirstViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FirstViewController.swift; sourceTree = "<group>"; };
@@ -86,7 +84,6 @@
 			children = (
 				6A85ED312050BCFE0048982E /* APIManager.swift */,
 				6A8E8A732057378B000E1E80 /* UserEmailInfo.swift */,
-				6A8E8A6F2056DF14000E1E80 /* UIHelper.swift */,
 				6A8E8A6D2056D516000E1E80 /* AddEmailInfo.swift */,
 				6A776F46204F2293007023DD /* AppDelegate.swift */,
 				6A776F48204F2293007023DD /* ViewController.swift */,
@@ -248,7 +245,6 @@
 				6A776F49204F2293007023DD /* ViewController.swift in Sources */,
 				6A776F47204F2293007023DD /* AppDelegate.swift in Sources */,
 				6A8E8A722056FF10000E1E80 /* VerificationViewController.swift in Sources */,
-				6A8E8A702056DF14000E1E80 /* UIHelper.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
