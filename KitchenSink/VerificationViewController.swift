@@ -45,16 +45,6 @@ class VerificationViewController: UIViewController {
                 print("Yo")
             }
         }
-        
-        numberToolbar = UIToolbar()
-        numberToolbar.barStyle = .blackTranslucent
-        numberToolbar.items = [
-            UIBarButtonItem(title: "Cancel", style: .bordered, target: self, action: Selector(("displayNoValidation"))),
-            UIBarButtonItem(barButtonSystemItem: .flexibleSpace, target: self, action: nil),
-            UIBarButtonItem(title: "Apply", style: .bordered, target: self, action: Selector(("displayValidationError")))
-        ]
-        
-        numberToolbar.sizeToFit()
     }
 
     override func didReceiveMemoryWarning() {
@@ -114,33 +104,33 @@ class VerificationViewController: UIViewController {
         codeStackView.centerYAnchor.constraint(equalTo: view.centerYAnchor).isActive = true
         
         code1TextField = UITextField(rounded: true)
-        code1TextField.tag = 11
-        code1TextField.addTarget(self, action: #selector(codeChanged(_:)), for: .editingChanged)
+//        code1TextField.tag = 11
+//        code1TextField.addTarget(self, action: #selector(codeChanged(_:)), for: .editingChanged)
         codeStackView.addArrangedSubview(code1TextField)
         
         code2TextField = UITextField(rounded: true)
-        code1TextField.tag = 12
-        code2TextField.addTarget(self, action: #selector(codeChanged(_:)), for: .editingChanged)
+//        code1TextField.tag = 12
+//        code2TextField.addTarget(self, action: #selector(codeChanged(_:)), for: .editingChanged)
         codeStackView.addArrangedSubview(code2TextField)
         
         code3TextField = UITextField(rounded: true)
-        code1TextField.tag = 13
-        code3TextField.addTarget(self, action: #selector(codeChanged(_:)), for: .editingChanged)
+//        code1TextField.tag = 13
+//        code3TextField.addTarget(self, action: #selector(codeChanged(_:)), for: .editingChanged)
         codeStackView.addArrangedSubview(code3TextField)
         
         code4TextField = UITextField(rounded: true)
-        code1TextField.tag = 14
-        code4TextField.addTarget(self, action: #selector(codeChanged(_:)), for: .editingChanged)
+//        code1TextField.tag = 14
+//        code4TextField.addTarget(self, action: #selector(codeChanged(_:)), for: .editingChanged)
         codeStackView.addArrangedSubview(code4TextField)
         
         code5TextField = UITextField(rounded: true)
-        code1TextField.tag = 15
-        code5TextField.addTarget(self, action: #selector(codeChanged(_:)), for: .editingChanged)
+//        code1TextField.tag = 15
+//        code5TextField.addTarget(self, action: #selector(codeChanged(_:)), for: .editingChanged)
         codeStackView.addArrangedSubview(code5TextField)
         
         code6TextField = UITextField(rounded: true)
-        code1TextField.tag = 16
-        code6TextField.addTarget(self, action: #selector(codeChanged(_:)), for: .editingChanged)
+//        code1TextField.tag = 16
+//        code6TextField.addTarget(self, action: #selector(codeChanged(_:)), for: .editingChanged)
         codeStackView.addArrangedSubview(code6TextField)
         
         errorLabel = UILabel()
@@ -149,6 +139,12 @@ class VerificationViewController: UIViewController {
         errorLabel.topAnchor.constraint(equalTo: codeStackView.bottomAnchor, constant: 30.0).isActive = true
         errorLabel.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
         
+        code1TextField.addTarget(self, action: #selector(textFieldDidChange(textField:)), for: .editingChanged)
+        code2TextField.addTarget(self, action: #selector(textFieldDidChange(textField:)), for: .editingChanged)
+        code3TextField.addTarget(self, action: #selector(textFieldDidChange(textField:)), for: .editingChanged)
+        code4TextField.addTarget(self, action: #selector(textFieldDidChange(textField:)), for: .editingChanged)
+        code5TextField.addTarget(self, action: #selector(textFieldDidChange(textField:)), for: .editingChanged)
+        code6TextField.addTarget(self, action: #selector(textFieldDidChange(textField:)), for: .editingChanged)
     }
     
     /*
@@ -160,6 +156,38 @@ class VerificationViewController: UIViewController {
         // Pass the selected object to the new view controller.
     }
     */
+    
+    // Entering 6-digit code is first thing that happens in view
+//    override func viewWillAppear(_ animated: Bool) {
+//        super.viewWillAppear(animated)
+//        code1TextField.becomeFirstResponder()
+//    }
+    
+    @objc func textFieldDidChange(textField: UITextField) {
+        let text = textField.text
+        
+        if text?.utf16.count == 1 {
+            switch textField {
+            case code1TextField:
+                code2TextField.becomeFirstResponder()
+            case code2TextField:
+                code3TextField.becomeFirstResponder()
+            case code3TextField:
+                code4TextField.becomeFirstResponder()
+            case code4TextField:
+                code5TextField.becomeFirstResponder()
+            case code5TextField:
+                code6TextField.becomeFirstResponder()
+            case code6TextField:
+                code6TextField.resignFirstResponder()
+            default:
+                break
+            }
+        }
+        else {
+            
+        }
+    }
     
     @objc func verifyButtonPressed() {
         guard let email = email else { return }
@@ -189,71 +217,71 @@ class VerificationViewController: UIViewController {
         self.view.window?.rootViewController?.dismiss(animated: true, completion: nil)
     }
     
-    @objc func codeChanged(_ sender: UITextField) {
-        guard let text = sender.text else { return }
-        
-        let lastChar = text.suffix(1)
-        sender.text = String(lastChar)
-        
-        if sender.tag >= 11 && sender.tag <= 15 {
-            let nextTextField = sender.superview?.viewWithTag(sender.tag + 1)
-            nextTextField?.becomeFirstResponder()
-        }
-        
-        displayNoValidation()
-    }
+//    @objc func codeChanged(_ sender: UITextField) {
+//        guard let text = sender.text else { return }
+//
+//        let lastChar = text.suffix(1)
+//        sender.text = String(lastChar)
+//
+//        if sender.tag >= 11 && sender.tag <= 15 {
+//            let nextTextField = sender.superview?.viewWithTag(sender.tag + 1)
+//            nextTextField?.becomeFirstResponder()
+//        }
+//
+////        displayNoValidation()
+//    }
     
-    func getInputCode() -> String {
-        let firstChar = code1TextField.text ?? ""
-        let secondChar = code2TextField.text ?? ""
-        let thirdChar = code3TextField.text ?? ""
-        let fourthChar = code4TextField.text ?? ""
-        let fifthChar = code5TextField.text ?? ""
-        let sixthChar = code6TextField.text ?? ""
-        
-        return "\(firstChar)\(secondChar)\(thirdChar)\(fourthChar)\(fifthChar)\(sixthChar)"
-    }
+//    func getInputCode() -> String {
+//        let firstChar = code1TextField.text ?? ""
+//        let secondChar = code2TextField.text ?? ""
+//        let thirdChar = code3TextField.text ?? ""
+//        let fourthChar = code4TextField.text ?? ""
+//        let fifthChar = code5TextField.text ?? ""
+//        let sixthChar = code6TextField.text ?? ""
+//
+//        return "\(firstChar)\(secondChar)\(thirdChar)\(fourthChar)\(fifthChar)\(sixthChar)"
+//    }
     
-    func displayValidationError(message: String) {
-        
-        // Show error message
-        errorLabel.text = message
-        
-        setTextFieldStyle(textField: code1TextField, errorStyle: true)
-        setTextFieldStyle(textField: code2TextField, errorStyle: true)
-        setTextFieldStyle(textField: code3TextField, errorStyle: true)
-        setTextFieldStyle(textField: code4TextField, errorStyle: true)
-        setTextFieldStyle(textField: code5TextField, errorStyle: true)
-        setTextFieldStyle(textField: code6TextField, errorStyle: true)
-        
-        code1TextField.becomeFirstResponder()
-    }
+//    func displayValidationError(message: String) {
+//
+//        // Show error message
+//        errorLabel.text = message
+//
+//        setTextFieldStyle(textField: code1TextField, errorStyle: true)
+//        setTextFieldStyle(textField: code2TextField, errorStyle: true)
+//        setTextFieldStyle(textField: code3TextField, errorStyle: true)
+//        setTextFieldStyle(textField: code4TextField, errorStyle: true)
+//        setTextFieldStyle(textField: code5TextField, errorStyle: true)
+//        setTextFieldStyle(textField: code6TextField, errorStyle: true)
+//
+//        code1TextField.becomeFirstResponder()
+//    }
+//
+//    func displayNoValidation() {
+//
+//        // Clear error message
+//        errorLabel.text = ""
+//
+//        setTextFieldStyle(textField: code1TextField, errorStyle: false)
+//        setTextFieldStyle(textField: code2TextField, errorStyle: false)
+//        setTextFieldStyle(textField: code3TextField, errorStyle: false)
+//        setTextFieldStyle(textField: code4TextField, errorStyle: false)
+//        setTextFieldStyle(textField: code5TextField, errorStyle: false)
+//        setTextFieldStyle(textField: code6TextField, errorStyle: true)
+//    }
     
-    func displayNoValidation() {
-        
-        // Clear error message
-        errorLabel.text = ""
-        
-        setTextFieldStyle(textField: code1TextField, errorStyle: false)
-        setTextFieldStyle(textField: code2TextField, errorStyle: false)
-        setTextFieldStyle(textField: code3TextField, errorStyle: false)
-        setTextFieldStyle(textField: code4TextField, errorStyle: false)
-        setTextFieldStyle(textField: code5TextField, errorStyle: false)
-        setTextFieldStyle(textField: code6TextField, errorStyle: true)
-    }
-    
-    func setTextFieldStyle(textField: UITextField, errorStyle: Bool) {
-        textField.autocorrectionType = UITextAutocorrectionType.no
-        textField.layer.borderWidth = 1.0
-        textField.layer.cornerRadius = 20.0
-        textField.layer.borderColor = errorStyle ? UIColor.red.cgColor : UIColor(red: 105/255, green: 128/255, blue: 151/255, alpha: 1.0).cgColor
-        
-        // Maybe there is a simpler way to change the color of the current text...
-        let tempText = textField.text
-        textField.text = ""
-        textField.textColor = errorStyle ? UIColor.red : UIColor(red: 105/255, green: 128/255, blue: 151/255, alpha: 1.0)
-        textField.text = tempText
-    }
+//    func setTextFieldStyle(textField: UITextField, errorStyle: Bool) {
+//        textField.autocorrectionType = UITextAutocorrectionType.no
+//        textField.layer.borderWidth = 1.0
+//        textField.layer.cornerRadius = 20.0
+//        textField.layer.borderColor = errorStyle ? UIColor.red.cgColor : UIColor(red: 105/255, green: 128/255, blue: 151/255, alpha: 1.0).cgColor
+//
+//        // Maybe there is a simpler way to change the color of the current text...
+//        let tempText = textField.text
+//        textField.text = ""
+//        textField.textColor = errorStyle ? UIColor.red : UIColor(red: 105/255, green: 128/255, blue: 151/255, alpha: 1.0)
+//        textField.text = tempText
+//    }
 
 }
 
