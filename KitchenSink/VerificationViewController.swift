@@ -174,6 +174,14 @@ class VerificationViewController: UIViewController {
 //        code4TextField.addTarget(self, action: #selector(textField(_:shouldChangeCharactersIn:replacementString:)), for: .editingChanged)
 //        code5TextField.addTarget(self, action: #selector(textField(_:shouldChangeCharactersIn:replacementString:)), for: .editingChanged)
 //        code6TextField.addTarget(self, action: #selector(textField(_:shouldChangeCharactersIn:replacementString:)), for: .editingChanged)
+        
+        // func textFieldHasChange(textField: UITextField)
+//        code1TextField.addTarget(self, action: #selector(textFieldHasChange(textField:)), for: .editingChanged)
+//        code2TextField.addTarget(self, action: #selector(textFieldHasChange(textField:)), for: .editingChanged)
+//        code3TextField.addTarget(self, action: #selector(textFieldHasChange(textField:)), for: .editingChanged)
+//        code4TextField.addTarget(self, action: #selector(textFieldHasChange(textField:)), for: .editingChanged)
+//        code5TextField.addTarget(self, action: #selector(textFieldHasChange(textField:)), for: .editingChanged)
+//        code6TextField.addTarget(self, action: #selector(textFieldHasChange(textField:)), for: .editingChanged)
     }
     
     /*
@@ -213,19 +221,21 @@ class VerificationViewController: UIViewController {
                 break
             }
         }
-        else if ((textField.text?.count)! >= 1  && text?.count == 0) {
+//        else if ((textField.text?.count)! >= 1  && text?.count == 0) {
+        else if text?.utf16.count == 0 {
+            let textField = ""
             switch textField {
-            case code6TextField:
-                code5TextField.becomeFirstResponder()
-            case code5TextField:
-                code4TextField.becomeFirstResponder()
-            case code4TextField:
-                code3TextField.becomeFirstResponder()
-            case code3TextField:
-                code2TextField.becomeFirstResponder()
-            case code2TextField:
+            case code2TextField.text!:
                 code1TextField.becomeFirstResponder()
-            case code1TextField:
+            case code3TextField.text!:
+                code2TextField.becomeFirstResponder()
+            case code4TextField.text!:
+                code3TextField.becomeFirstResponder()
+            case code5TextField.text!:
+                code4TextField.becomeFirstResponder()
+            case code6TextField.text!:
+                code5TextField.becomeFirstResponder()
+            case code1TextField.text!:
                 code1TextField.resignFirstResponder()
             default:
                 break
@@ -266,54 +276,54 @@ class VerificationViewController: UIViewController {
     }
     
         // Test out later. Looks better to use because can increase/decrease number of textfields
-    @objc func textFieldChanged(textField: UITextField, shouldChangeCharactersInRange range: NSRange, replacementString string: String) -> Bool {
-        code1TextField = textField as! CustomTextField
-        let nextTag = textField.tag + 1;
-        // get next responder
-        var nextResponder = textField.superview?.viewWithTag(nextTag);
-
-        // On inputing value to textfield
-        if ((textField.text?.count)! < 1  && string.count > 0) {
-
-            if (nextResponder == nil){
-                nextResponder = textField.superview?.viewWithTag(1);
-            }
-            textField.text = string;
-
-            if nextTag == 5 {
-                code6TextField.resignFirstResponder()
-                return true;
-            }
-
-            nextResponder?.becomeFirstResponder();
-            return false;
-        }
-        if (textField.text?.count >= 1  && string.count == 0) {
-            // on deleteing value from Textfield
-            let presentTag = textField.tag;
-            // get next responder
-            var presentResponder = textField.superview?.viewWithTag(presentTag);
-
-            if (presentResponder == nil){
-                presentResponder = textField.superview?.viewWithTag(1);
-            }
-            textField.text = "";
-            presentResponder?.becomeFirstResponder();
-            return false;
-        }
-
-        let currentCharacterCount = textField.text?.count ?? 0
-        let newLength = currentCharacterCount + string.count - range.length
-        if newLength > 1 {
-            textField.text = string
-            if (nextResponder != nil){
-                nextResponder?.becomeFirstResponder();
-            }
-
-        }
-        let returnVal = newLength <= 1
-        return returnVal;
-    }
+//    @objc func textFieldChanged(textField: UITextField, shouldChangeCharactersInRange range: NSRange, replacementString string: String) -> Bool {
+//        code1TextField = textField as! CustomTextField
+//        let nextTag = textField.tag + 1;
+//        // get next responder
+//        var nextResponder = textField.superview?.viewWithTag(nextTag);
+//
+//        // On inputing value to textfield
+//        if ((textField.text?.count)! < 1  && string.count > 0) {
+//
+//            if (nextResponder == nil){
+//                nextResponder = textField.superview?.viewWithTag(1);
+//            }
+//            textField.text = string;
+//
+//            if nextTag == 5 {
+//                code6TextField.resignFirstResponder()
+//                return true;
+//            }
+//
+//            nextResponder?.becomeFirstResponder();
+//            return false;
+//        }
+//        if (textField.text?.count >= 1  && string.count == 0) {
+//            // on deleteing value from Textfield
+//            let presentTag = textField.tag;
+//            // get next responder
+//            var presentResponder = textField.superview?.viewWithTag(presentTag);
+//
+//            if (presentResponder == nil){
+//                presentResponder = textField.superview?.viewWithTag(1);
+//            }
+//            textField.text = "";
+//            presentResponder?.becomeFirstResponder();
+//            return false;
+//        }
+//
+//        let currentCharacterCount = textField.text?.count ?? 0
+//        let newLength = currentCharacterCount + string.count - range.length
+//        if newLength > 1 {
+//            textField.text = string
+//            if (nextResponder != nil){
+//                nextResponder?.becomeFirstResponder();
+//            }
+//
+//        }
+//        let returnVal = newLength <= 1
+//        return returnVal;
+//    }
     
 //    func textFieldDidDelete() {
 //        print("Entered Delete");
@@ -448,6 +458,62 @@ class VerificationViewController: UIViewController {
 //        textField.text = ""
 //        textField.textColor = errorStyle ? UIColor.red : UIColor(red: 105/255, green: 128/255, blue: 151/255, alpha: 1.0)
 //        textField.text = tempText
+//    }
+    
+    //MARK: - Editing Passcode
+    func textFieldDidBeginEditing(_ textField: UITextField) {
+        if textField.text?.utf16.count == 1 {
+            textField.text = ""
+        }
+    }
+    
+//    @objc func textFieldHasChange(textField: UITextField) {
+//
+//        let text = textField.text
+//
+//        if text?.utf16.count == 1 {
+//            switch textField {
+//            case code1TextField:
+//                if code2TextField.text?.utf16.count == 1 {
+//                    code1TextField.resignFirstResponder()
+//                }
+//                else {
+//                    code2TextField.becomeFirstResponder()
+//                }
+//            case code2TextField:
+//                if code3TextField.text?.utf16.count == 1 {
+//                    code2TextField.resignFirstResponder()
+//                }
+//                else {
+//                    code3TextField.becomeFirstResponder()
+//                }
+//            case code3TextField:
+//                if code4TextField.text?.utf16.count == 1 {
+//                    code3TextField.resignFirstResponder()
+//                }
+//                else {
+//                    code4TextField.becomeFirstResponder()
+//                }
+//            case code4TextField:
+//                if code5TextField.text?.utf16.count == 1 {
+//                    code4TextField.resignFirstResponder()
+//                }
+//                else {
+//                    code5TextField.becomeFirstResponder()
+//                }
+//            case code5TextField:
+//                if code6TextField.text?.utf16.count == 1 {
+//                    code5TextField.resignFirstResponder()
+//                }
+//                else {
+//                    code6TextField.becomeFirstResponder()
+//                }
+//            case code6TextField:
+//                code6TextField.resignFirstResponder()
+//            default:
+//                break
+//            }
+//        }
 //    }
 
 }
