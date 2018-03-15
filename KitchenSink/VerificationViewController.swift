@@ -8,9 +8,29 @@
 
 import UIKit
 
+protocol CustomTextFieldDelegate{
+    func textFieldDidDelete()
+}
+
+class CustomTextField: UITextField {
+    var myCustomTextFieldDelegate : CustomTextFieldDelegate!
+    override func deleteBackward() {
+        super.deleteBackward()
+        myCustomTextFieldDelegate.textFieldDidDelete()
+    }
+}
+
+
+public protocol VerificationDelegate: class {
+    func verifyCode(email: String, code: String)
+}
+
 class VerificationViewController: UIViewController {
     
+    public weak var delegate: VerificationDelegate?
+    
     var email: String?
+    var code: String?
     var emailTextField: UITextField!
     var numberToolbar: UIToolbar!
     
@@ -139,12 +159,21 @@ class VerificationViewController: UIViewController {
         errorLabel.topAnchor.constraint(equalTo: codeStackView.bottomAnchor, constant: 30.0).isActive = true
         errorLabel.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
         
+        // @objc func textFieldDidChange(textField: UITextField)
         code1TextField.addTarget(self, action: #selector(textFieldDidChange(textField:)), for: .editingChanged)
         code2TextField.addTarget(self, action: #selector(textFieldDidChange(textField:)), for: .editingChanged)
         code3TextField.addTarget(self, action: #selector(textFieldDidChange(textField:)), for: .editingChanged)
         code4TextField.addTarget(self, action: #selector(textFieldDidChange(textField:)), for: .editingChanged)
         code5TextField.addTarget(self, action: #selector(textFieldDidChange(textField:)), for: .editingChanged)
         code6TextField.addTarget(self, action: #selector(textFieldDidChange(textField:)), for: .editingChanged)
+        
+        //func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool
+//        code1TextField.addTarget(self, action: #selector(textFieldChanged(textField:shouldChangeCharactersInRange:replacementString:)), for: .editingChanged)
+//        code2TextField.addTarget(self, action: #selector(textField(_:shouldChangeCharactersIn:replacementString:)), for: .editingChanged)
+//        code3TextField.addTarget(self, action: #selector(textField(_:shouldChangeCharactersIn:replacementString:)), for: .editingChanged)
+//        code4TextField.addTarget(self, action: #selector(textField(_:shouldChangeCharactersIn:replacementString:)), for: .editingChanged)
+//        code5TextField.addTarget(self, action: #selector(textField(_:shouldChangeCharactersIn:replacementString:)), for: .editingChanged)
+//        code6TextField.addTarget(self, action: #selector(textField(_:shouldChangeCharactersIn:replacementString:)), for: .editingChanged)
     }
     
     /*
@@ -184,34 +213,172 @@ class VerificationViewController: UIViewController {
                 break
             }
         }
-        else {
-            
+        else if ((textField.text?.count)! >= 1  && text?.count == 0) {
+            switch textField {
+            case code6TextField:
+                code5TextField.becomeFirstResponder()
+            case code5TextField:
+                code4TextField.becomeFirstResponder()
+            case code4TextField:
+                code3TextField.becomeFirstResponder()
+            case code3TextField:
+                code2TextField.becomeFirstResponder()
+            case code2TextField:
+                code1TextField.becomeFirstResponder()
+            case code1TextField:
+                code1TextField.resignFirstResponder()
+            default:
+                break
+            }
         }
     }
     
     @objc func verifyButtonPressed() {
-        guard let email = email else { return }
+//        self.delegate?.verifyCode(email: "", code: "") // Use for programmatic view
+        
+        guard let email = email, let code = code else { return }
         
         let manager = APIManager()
         
-        manager.signInDevice(email: email) { (emailInfo, error) in
+        manager.verifyAccountInfo(email: email, code: code) { (emailInfo, error) in
             DispatchQueue.main.async {
-                if let _ = error {
-                    print("Error when connecting to the server")
-                }
-                else {
-                    if (emailInfo?.errors) != nil {
-                        print("Some error: \(String(describing: emailInfo?.errors))")
-                    }
-                    else {
-                        print("Code was sent to your email address")
-                        self.performSegue(withIdentifier: "toMainVC", sender: self)
-                    }
-                }
+                
             }
         }
+        
+//        manager.signInDevice(email: email) { (emailInfo, error) in
+//            DispatchQueue.main.async {
+//                if let _ = error {
+//                    print("Error when connecting to the server")
+//                }
+//                else {
+//                    if (emailInfo?.errors) != nil {
+//                        print("Some error: \(String(describing: emailInfo?.errors))")
+//                    }
+//                    else {
+//                        print("Code was sent to your email address")
+//                        self.performSegue(withIdentifier: "toMainVC", sender: self)
+//                    }
+//                }
+//            }
+//        }
         print("Verify button pressed")
     }
+    
+        // Test out later. Looks better to use because can increase/decrease number of textfields
+    @objc func textFieldChanged(textField: UITextField, shouldChangeCharactersInRange range: NSRange, replacementString string: String) -> Bool {
+        code1TextField = textField as! CustomTextField
+        let nextTag = textField.tag + 1;
+        // get next responder
+        var nextResponder = textField.superview?.viewWithTag(nextTag);
+
+        // On inputing value to textfield
+        if ((textField.text?.count)! < 1  && string.count > 0) {
+
+            if (nextResponder == nil){
+                nextResponder = textField.superview?.viewWithTag(1);
+            }
+            textField.text = string;
+
+            if nextTag == 5 {
+                code6TextField.resignFirstResponder()
+                return true;
+            }
+
+            nextResponder?.becomeFirstResponder();
+            return false;
+        }
+        if (textField.text?.count >= 1  && string.count == 0) {
+            // on deleteing value from Textfield
+            let presentTag = textField.tag;
+            // get next responder
+            var presentResponder = textField.superview?.viewWithTag(presentTag);
+
+            if (presentResponder == nil){
+                presentResponder = textField.superview?.viewWithTag(1);
+            }
+            textField.text = "";
+            presentResponder?.becomeFirstResponder();
+            return false;
+        }
+
+        let currentCharacterCount = textField.text?.count ?? 0
+        let newLength = currentCharacterCount + string.count - range.length
+        if newLength > 1 {
+            textField.text = string
+            if (nextResponder != nil){
+                nextResponder?.becomeFirstResponder();
+            }
+
+        }
+        let returnVal = newLength <= 1
+        return returnVal;
+    }
+    
+//    func textFieldDidDelete() {
+//        print("Entered Delete");
+//        print("Tag!!\(currentActiveTextField.tag)")
+//        var previousTag = 0
+//        if currentActiveTextField.text == ""{
+//            previousTag = currentActiveTextField.tag - 1
+//        }else{
+//            previousTag = currentActiveTextField.tag
+//        }
+//        let previousResponder = currentActiveTextField.superview?.viewWithTag(previousTag)
+//        if(previousTag > 0){
+//            let previousTextField = previousResponder as! CustomTextField
+//            previousTextField.text = ""
+//            currentActiveTextField = previousTextField
+//            previousResponder?.becomeFirstResponder()
+//        }
+//    }
+    
+//    @objc func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
+//        // On inputing value to textfield
+//        if ((textField.text?.count)! < 1  && string.count > 0) {
+//            if (textField == code1TextField) {
+//                code2TextField.becomeFirstResponder()
+//            }
+//            if (textField == code2TextField) {
+//                code3TextField.becomeFirstResponder()
+//            }
+//            if (textField == code3TextField) {
+//                code4TextField.becomeFirstResponder()
+//            }
+//            if (textField == code4TextField) {
+//                code5TextField.becomeFirstResponder()
+//            }
+//            if (textField == code5TextField) {
+//                code6TextField.becomeFirstResponder()
+//            }
+//            textField.text = string
+//            return false
+//
+//        } else if ((textField.text?.count)! >= 1  && string.count == 0) {
+//            // on deleting value from Textfield
+//            if (textField == code2TextField) {
+//                code1TextField.becomeFirstResponder()
+//            }
+//            if (textField == code3TextField) {
+//                code2TextField.becomeFirstResponder()
+//            }
+//            if (textField == code4TextField) {
+//                code3TextField.becomeFirstResponder()
+//            }
+//            if (textField == code5TextField) {
+//                code4TextField.becomeFirstResponder()
+//            }
+//            if (textField == code6TextField) {
+//                code5TextField.becomeFirstResponder()
+//            }
+//            textField.text = ""
+//            return false
+//        } else if ((textField.text?.count)! >= 1 ) {
+//            textField.text = string
+//            return false
+//        }
+//        return true
+//    }
     
     @objc func dismissButtonPressed() {
         self.view.window?.rootViewController?.dismiss(animated: true, completion: nil)

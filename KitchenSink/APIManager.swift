@@ -187,7 +187,25 @@ public class APIManager {
         }.resume()
     }
     
-    public func verifyAccount() {
+    public func verifyAccountInfo(email: String, code: String, completion: @escaping (SignUpInfo?, Error?) -> ()) {
+        let email = email.lowercased()
         
+        let url = URL(string: "\(serverAddress)/v1/oauth/token.json")
+        let jsonString = """
+        {
+            "client_id": "afa6488ce4e72cc7196a4332d6b003450c7707fc90d385c9f13aca9ed56c9318",
+             "otp_attempt": \(code),
+             "password": "password",
+             "email": \(email),
+             "scope": "exchange",
+             "grant_type": "password",
+             "redirect_uri": "http://localhost:8080"
+        }
+        """
+        
+        var request = URLRequest(url: url!)
+        request.httpMethod = "POST"
+        request.httpBody = jsonString.data(using: .utf8)
+        request.setValue("application/json; charset=utf-8", forHTTPHeaderField: "Content-Type")
     }
 }
