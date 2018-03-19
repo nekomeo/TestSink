@@ -11,8 +11,8 @@ import Foundation
 // Checks if user registered email account
 public struct UserEmailInfo: Codable {
     
-    public let email: String?
-    public let unconfirmed_email: String?
+    public let message: String?
+    public let user_id: String?
     
 }
 
@@ -20,7 +20,14 @@ public struct ClientInfoData: Codable {
     public let message: String
     public let client_id: String?
     public let client_secret: String?
-    public let otp_attempt: String?
-    public let password: String?
-    public let refresh_token: String?
+}
+
+public struct ClientAccessInfo: Codable {
+    public let access_token: String?
+    public let token_type: String?
+    public let expires_in: String?
+    public let scope: String?
+    public let created_at: String?
+    public let error: String?
+    public let error_description: String?
 }

@@ -62,7 +62,7 @@ class VerificationViewController: UIViewController {
 //                        self.emailTextField.text = "Hi \(email)"
 //                    }
                 }
-                print("Yo")
+                print("Hi")
             }
         }
     }
@@ -214,36 +214,40 @@ class VerificationViewController: UIViewController {
         }
     }
     
-    @objc func verifyButtonPressed() {
-//        self.delegate?.verifyCode(email: "", code: "") // Use for programmatic view
+    // Strings together textfields to become the code
+    func getInputCode() -> String {
+        let firstChar = code1TextField.text ?? ""
+        let secondChar = code2TextField.text ?? ""
+        let thirdChar = code3TextField.text ?? ""
+        let fourthChar = code4TextField.text ?? ""
+        let fifthChar = code5TextField.text ?? ""
+        let sixthChar = code6TextField.text ?? ""
         
-        guard let email = email, let code = code else { return }
+        return "\(firstChar)\(secondChar)\(thirdChar)\(fourthChar)\(fifthChar)\(sixthChar)"
+    }
+    
+    @objc func verifyButtonPressed() {
+        guard let email = emailTextField.text else {return}
+        let code = getInputCode()
+        
+//        self.delegate?.verifyCode(email: email, code: getInputCode()) // should be code
+        
+//        print("Verify Email: \(email)")
+//        print("Verify Code: \(getInputCode())")
         
         let manager = APIManager()
-        
-        manager.verifyAccountInfo(email: email, code: code) { (emailInfo, error) in
+        manager.verifyAccountInfo(email: email, code: code) { (info, error) in // should be code
             DispatchQueue.main.async {
-                
+                if let _ = error {
+                    print("Some error here")
+                }
+                else {
+                    print("Verify Email: \(email)")
+                    print("Verify Code: \(code)")
+                    self.performSegue(withIdentifier: "toMainVC", sender: self)
+                }
             }
         }
-        
-//        manager.signInDevice(email: email) { (emailInfo, error) in
-//            DispatchQueue.main.async {
-//                if let _ = error {
-//                    print("Error when connecting to the server")
-//                }
-//                else {
-//                    if (emailInfo?.errors) != nil {
-//                        print("Some error: \(String(describing: emailInfo?.errors))")
-//                    }
-//                    else {
-//                        print("Code was sent to your email address")
-//                        self.performSegue(withIdentifier: "toMainVC", sender: self)
-//                    }
-//                }
-//            }
-//        }
-        print("Verify button pressed")
     }
     
         // Test out later. Looks better to use because can increase/decrease number of textfields

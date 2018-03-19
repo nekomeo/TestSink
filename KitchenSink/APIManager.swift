@@ -19,7 +19,6 @@ public class APIManager {
 //    "user":{"email":"test@test.com"}
     
     var registrationAPIAddress: String
-//    var token: String
     
     public init() {
         registrationAPIAddress = "\(serverAddress)/v1/users"
@@ -47,9 +46,9 @@ public class APIManager {
                 // Decode object
                 let decoder = JSONDecoder()
                 
-                if let info = try? decoder.decode(SignUpInfo.self, from: data), let token = info.token {
-                    self.token = token
-                    print("Token: \(self.token)")
+                if let info = try? decoder.decode(SignUpInfo.self, from: data) { //}, let token = info.token {
+//                    self.token = token
+//                    print("Token: \(self.token)")
                     
 //                    // Save jwt in keychain
 //                    let keychain = KeychainHelper()
@@ -94,6 +93,35 @@ public class APIManager {
         }.resume()
     }
     
+//    let parameters = [
+//        "otp_attempt": "138146",
+//        "email": "gwen@gwen.com",
+//        "grant_type": "password",
+//        "scope": "exchange",
+//        "redirect_uri": "http://localhost:3000"
+//        ] as [String : Any]
+//    
+//    let postData = JSONSerialization.data(withJSONObject: parameters, options: [])
+//    
+//    let request = NSMutableURLRequest(url: NSURL(string: "http://localhost:3000/v1/oauth/token.json")! as URL,
+//                                      cachePolicy: .useProtocolCachePolicy,
+//                                      timeoutInterval: 10.0)
+//    request.httpMethod = "POST"
+//    request.allHTTPHeaderFields = headers
+//    request.httpBody = postData as Data
+//    
+//    let session = URLSession.shared
+//    let dataTask = session.dataTask(with: request as URLRequest, completionHandler: { (data, response, error) -> Void in
+//        if (error != nil) {
+//            print(error)
+//        } else {
+//            let httpResponse = response as? HTTPURLResponse
+//            print(httpResponse)
+//        }
+//    })
+//    
+//    dataTask.resume()
+    
     public func signInDevice(email: String, completion: @escaping (SignUpInfo?, Error?) -> ()) {
         let email = email.lowercased()
         
@@ -102,8 +130,8 @@ public class APIManager {
         {"doorkeeper_application":
             {
                 "name": "\(email)",
-                "redirect_uri": "http://localhost:8000",
-                "scopes": ["exchange"],
+                "redirect_uri": "http://localhost:3000",
+                "scope": ["exchange"],
                 "superapp": "true"
             },
         "user":
@@ -156,7 +184,7 @@ public class APIManager {
         
         var request = URLRequest(url: url!)
         request.httpMethod = "GET"
-//        request.setValue("Bearer \(token)", forHTTPHeaderField: "Authorization")
+        request.setValue("Bearer \(token)", forHTTPHeaderField: "Authorization")
         
         URLSession.shared.dataTask(with: request) { (data, response, error) in
             
@@ -187,19 +215,17 @@ public class APIManager {
         }.resume()
     }
     
-    public func verifyAccountInfo(email: String, code: String, completion: @escaping (SignUpInfo?, Error?) -> ()) {
+    public func verifyAccountInfo(email: String, code: String, completion: @escaping (ClientAccessInfo?, Error?) -> ()) {
         let email = email.lowercased()
         
         let url = URL(string: "\(serverAddress)/v1/oauth/token.json")
         let jsonString = """
         {
-            "client_id": "afa6488ce4e72cc7196a4332d6b003450c7707fc90d385c9f13aca9ed56c9318",
-             "otp_attempt": \(code),
-             "password": "password",
-             "email": \(email),
-             "scope": "exchange",
+             "otp_attempt": "\(code)",
+             "email": "\(email)",
              "grant_type": "password",
-             "redirect_uri": "http://localhost:8080"
+             "scope": "exchange",
+             "redirect_uri": "http://localhost:3000"
         }
         """
         
@@ -207,5 +233,30 @@ public class APIManager {
         request.httpMethod = "POST"
         request.httpBody = jsonString.data(using: .utf8)
         request.setValue("application/json; charset=utf-8", forHTTPHeaderField: "Content-Type")
+        request.setValue("Bearer \(token)", forHTTPHeaderField: "access_token")
+        
+        URLSession.shared.dataTask(with: request) { (data, response, error) in
+            
+            if let error = error {
+                completion(nil, error)
+            }
+            else if let data = data {
+                let decoder = JSONDecoder()
+                do {
+                    let info = try? decoder.decode(ClientAccessInfo.self, from: data)
+//                    print("Access token: \(info?.access_token)")
+//                    print("Error: \(info?.error_description)")
+                    completion(info, nil)
+                    print("Info: \(info)")
+                }
+                catch let jsonError {
+                    completion(nil, jsonError)
+                    print("Info passed: \(data)")
+                }
+            }
+        }.resume()
+        
+        print("Email entered: \(email)")
+        print("Code entered: \(code)")
     }
 }

@@ -8,7 +8,13 @@
 
 import UIKit
 
+protocol LoginDelegate {
+    func emailRegistered(email: String)
+}
+
 class LoginViewController: UIViewController {
+    
+    var emailLoginDelegate: LoginDelegate!
     
     var emailTextField: UITextField!
     var nameTextField: UITextField!
@@ -53,14 +59,6 @@ class LoginViewController: UIViewController {
         emailTextField.centerYAnchor.constraint(equalTo: view.centerYAnchor, constant: -20.0).isActive = true
         emailTextField.autocorrectionType = .no
         
-//        let passwordTextField = UITextField()
-//        passwordTextField.placeholder = "Password"
-//        passwordTextField.translatesAutoresizingMaskIntoConstraints = false
-//        view.addSubview(passwordTextField)
-//        passwordTextField.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
-//        passwordTextField.centerYAnchor.constraint(equalTo: view.centerYAnchor).isActive = true
-//        passwordTextField.autocorrectionType = .no
-        
         let loginButton = UIButton()
         loginButton.setTitle("Login", for: .normal)
         loginButton.setTitleColor(.purple, for: .normal)
@@ -85,7 +83,7 @@ class LoginViewController: UIViewController {
     */
     
     @objc func loginButtonTapped() {
-        guard let email = emailTextField.text, let name = nameTextField.text else { return }
+        guard let email = emailTextField.text else { return }
         
         let manager = APIManager()
         manager.createUser { (error) in
@@ -105,7 +103,6 @@ class LoginViewController: UIViewController {
                                 }
                                 else {
 //                                    print("Success")
-                                    print("User name is: \(name)")
                                     print("User entered email: \(email)")
                                     self.performSegue(withIdentifier: "toVerificationVC", sender: self)
                                 }
