@@ -13,6 +13,7 @@ public struct UserEmailInfo: Codable {
     
     public let message: String?
     public let user_id: String?
+    public let errors: String?
     
 }
 

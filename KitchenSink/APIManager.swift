@@ -59,11 +59,11 @@ public class APIManager {
         }.resume()
     }
     
-    public func saveEmail(email: String, completion: @escaping (SignUpInfo?, Error?) -> ()) {
+    public func saveEmail(email: String, completion: @escaping (UserEmailInfo?, Error?) -> ()) {
         
         let email = email.lowercased()
         
-        let url = URL(string: "\(registrationAPIAddress)/email")
+        let url = URL(string: "\(registrationAPIAddress)")
         let jsonString = """
         {"user":{"email": "\(email)", "exchange": true}}
         """
@@ -79,15 +79,18 @@ public class APIManager {
             
             if let error = error {
                 completion(nil, error)
+                print("Sign in Error \(error)")
             }
             else if let data = data {
                 let decoder = JSONDecoder()
                 do {
-                    let info = try decoder.decode(SignUpInfo.self, from: data)
+                    let info = try decoder.decode(UserEmailInfo.self, from: data)
                     completion(info, nil)
+                    print("Signin info: \(info)")
                 }
                 catch let jsonError {
                     completion(nil, jsonError)
+                    print("JSON Error: \(jsonError)")
                 }
             }
         }.resume()
