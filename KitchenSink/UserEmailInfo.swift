@@ -25,9 +25,9 @@ public struct ClientInfoData: Codable {
 public struct ClientAccessInfo: Codable {
     public let access_token: String?
     public let token_type: String?
-    public let expires_in: String?
+    public let expires_in: Int?
     public let scope: String?
-    public let created_at: String?
+    public let created_at: Int?
     public let error: String?
     public let error_description: String?
 }

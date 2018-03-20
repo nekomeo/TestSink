@@ -218,11 +218,11 @@ public class APIManager {
     public func verifyAccountInfo(email: String, code: String, completion: @escaping (ClientAccessInfo?, Error?) -> ()) {
         let email = email.lowercased()
         
-        let url = URL(string: "\(serverAddress)/v1/oauth/token.json")
+        let url = URL(string: "http://localhost:3000/v1/oauth/token.json") //URL(string: "\(serverAddress)/v1/oauth/token.json")
         let jsonString = """
         {
              "otp_attempt": "\(code)",
-             "email": "\(email)",
+             "email": "gwen@gwen.com",
              "grant_type": "password",
              "scope": "exchange",
              "redirect_uri": "http://localhost:3000"
@@ -232,8 +232,8 @@ public class APIManager {
         var request = URLRequest(url: url!)
         request.httpMethod = "POST"
         request.httpBody = jsonString.data(using: .utf8)
-        request.setValue("application/json; charset=utf-8", forHTTPHeaderField: "Content-Type")
-        request.setValue("Bearer \(token)", forHTTPHeaderField: "access_token")
+        request.setValue("application/json", forHTTPHeaderField: "Content-Type")
+//        request.setValue("application/json; charset=utf-8", forHTTPHeaderField: "Content-Type")
         
         URLSession.shared.dataTask(with: request) { (data, response, error) in
             
@@ -241,12 +241,12 @@ public class APIManager {
                 completion(nil, error)
             }
             else if let data = data {
-                let decoder = JSONDecoder()
+//                let decoder = JSONDecoder()
                 do {
-                    let info = try? decoder.decode(ClientAccessInfo.self, from: data)
-//                    print("Access token: \(info?.access_token)")
+                    let info = try? JSONDecoder().decode(ClientAccessInfo.self, from: data)
 //                    print("Error: \(info?.error_description)")
                     completion(info, nil)
+                    print("Access token: \(info?.access_token)")
                     print("Info: \(info)")
                 }
                 catch let jsonError {
